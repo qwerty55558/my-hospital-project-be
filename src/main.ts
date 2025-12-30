@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -12,6 +13,24 @@ async function bootstrap() {
     credentials: true,
   });
 
+  // Swagger 설정
+  const config = new DocumentBuilder()
+    .setTitle('My Hospital API')
+    .setDescription('Hospital Management System API Documentation')
+    .setVersion('1.0.0')
+    .addServer('http://localhost:3030', 'Local Development Server')
+    .addTag('doctors', '의사 관리 API')
+    .addTag('posts', '게시글 관리 API')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document, {
+    jsonDocumentUrl: 'docs-json',
+  });
+
   await app.listen(process.env.PORT ?? 3000);
+  console.log(`Application is running on: ${await app.getUrl()}`);
+  console.log(`Swagger UI: ${await app.getUrl()}/docs`);
+  console.log(`Swagger JSON: ${await app.getUrl()}/docs-json`);
 }
 bootstrap();

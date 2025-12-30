@@ -15,6 +15,12 @@ export class DoctorsService {
     return this.doctorRepository.find();
   }
 
+  findRepresentatives() {
+    return this.doctorRepository.find({
+      where: { isRepresentative: true },
+    });
+  }
+
   async findOne(id: number) {
     const doctor = await this.doctorRepository.findOneBy({ id });
     if (!doctor) throw new NotFoundException(`Doctor with ID ${id} not found`);
