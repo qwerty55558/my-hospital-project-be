@@ -21,6 +21,7 @@ async function bootstrap() {
     .addServer('http://localhost:3030', 'Local Development Server')
     .addTag('doctors', '의사 관리 API')
     .addTag('posts', '게시글 관리 API')
+    .addTag('consultations', '온라인 상담 API')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
