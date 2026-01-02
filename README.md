@@ -1,98 +1,139 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# My Hospital Project - Backend API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+안과 전문 병원 홍보용 웹사이트의 백엔드 API 서버입니다.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tech Stack
 
-## Description
+- **Framework**: NestJS 11
+- **Database**: PostgreSQL (Supabase)
+- **ORM**: TypeORM
+- **Documentation**: Swagger (OpenAPI 3.0)
+- **Validation**: Zod
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Getting Started
 
-## Project setup
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Installation
 
 ```bash
-$ npm install
+npm install
 ```
-
-## Compile and run the project
+### Running the app
 
 ```bash
-# development
-$ npm run start
+# development (watch mode)
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# production
+npm run build
+npm run start:prod
 ```
 
-## Run tests
+### API Documentation
 
-```bash
-# unit tests
-$ npm run test
+서버 실행 후 아래 URL에서 Swagger 문서를 확인할 수 있습니다:
 
-# e2e tests
-$ npm run test:e2e
+- Swagger UI: http://localhost:3000/docs
+- OpenAPI JSON: http://localhost:3000/docs-json
 
-# test coverage
-$ npm run test:cov
+## API Endpoints
+
+### Doctors (의료진)
+
+| Method | Endpoint                   | Description         |
+| ------ | -------------------------- | ------------------- |
+| GET    | `/doctors`                 | 의사 목록 조회      |
+| GET    | `/doctors/representatives` | 대표 의사 목록 조회 |
+| GET    | `/doctors/:id`             | 의사 단건 조회      |
+| POST   | `/doctors`                 | 의사 생성           |
+| PATCH  | `/doctors/:id`             | 의사 정보 수정      |
+| DELETE | `/doctors/:id`             | 의사 삭제           |
+
+### Posts (병원 소식)
+
+| Method | Endpoint                  | Description                     |
+| ------ | ------------------------- | ------------------------------- |
+| GET    | `/posts`                  | 게시글 목록 조회 (페이지네이션) |
+| GET    | `/posts/categories/count` | 카테고리별 게시글 수 조회       |
+| GET    | `/posts/:id`              | 게시글 단건 조회 (조회수 증가)  |
+| POST   | `/posts`                  | 게시글 생성                     |
+| PATCH  | `/posts/:id`              | 게시글 수정                     |
+| DELETE | `/posts/:id`              | 게시글 삭제                     |
+
+**Query Parameters (GET /posts)**
+
+- `page`: 페이지 번호 (기본값: 1)
+- `limit`: 페이지당 항목 수 (기본값: 10, 최대: 100)
+- `category`: 카테고리 필터 (`공지`, `뉴스`, `이벤트`, `건강정보`, `채용`)
+
+### Consultations (온라인 상담)
+
+| Method | Endpoint                      | Description         |
+| ------ | ----------------------------- | ------------------- |
+| GET    | `/consultations`              | 상담 목록 조회      |
+| GET    | `/consultations/status/count` | 상태별 상담 수 조회 |
+| GET    | `/consultations/:id`          | 상담 단건 조회      |
+| POST   | `/consultations`              | 상담 신청           |
+| PATCH  | `/consultations/:id/answer`   | 상담 답변 등록      |
+| DELETE | `/consultations/:id`          | 상담 삭제           |
+
+**Query Parameters (GET /consultations)**
+
+- `status`: 상태 필터 (`pending`, `answered`, `closed`)
+
+## Data Models
+
+### Doctor
+
+- `id`, `name`, `position`, `specialty`, `profileImage`
+- `education`, `career`, `certifications`
+- `isRepresentative`, `createdAt`
+
+### Post
+
+- `id`, `category`, `title`, `content`, `summary`, `thumbnailUrl`
+- `authorId`, `isPinned`, `isPublished`, `viewCount`
+- `createdAt`, `updatedAt`, `publishedAt`
+
+### Consultation
+
+- `id`, `name`, `phone`, `doctorId`, `doctorName`
+- `category`, `content`, `privacyAgreed`
+- `status`, `answer`, `answeredAt`
+- `createdAt`, `updatedAt`
+
+## Project Structure
+
+```
+src/
+├── doctors/          # 의료진 모듈
+├── posts/            # 병원 소식 모듈
+├── consultations/    # 온라인 상담 모듈
+├── app.module.ts     # 루트 모듈
+└── main.ts           # 엔트리포인트
 ```
 
-## Deployment
+## Implementation Status
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### Completed
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+- [x] 의료진(doctors) CRUD + 대표의사 필터
+- [x] 병원소식(posts) CRUD + 페이지네이션 + 카테고리 필터
+- [x] 온라인상담(consultations) CRUD + 답변 기능
+- [x] Swagger API 문서화
+- [x] Supabase PostgreSQL 연동
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+### Todo
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- [ ] 진료안내(services) 모듈
+- [ ] 장비(equipments) 모듈
+- [ ] 미디어 업로드 기능
+- [ ] 인증/권한 관리
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+UNLICENSED
