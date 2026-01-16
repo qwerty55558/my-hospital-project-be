@@ -17,7 +17,7 @@ async function bootstrap() {
     .setTitle('My Hospital API')
     .setDescription('Hospital Management System API Documentation')
     .setVersion('1.0.0')
-    .addServer('https://168.107.56.235', 'Production Server')
+    .addServer('https://myhospitalproject.kro.kr', 'Production Server')
     .addTag('doctors', '의사 관리 API')
     .addTag('posts', '게시글 관리 API')
     .addTag('consultations', '온라인 상담 API')
