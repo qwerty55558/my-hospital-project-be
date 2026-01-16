@@ -1,0 +1,30 @@
+services:
+  app:
+    image: ghcr.io/qwerty55558/my-hospital-project-be:latest
+    container_name: hospital-api
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DATABASE_URL=${DATABASE_URL}
+    networks:
+      - hospital-network
+
+  nginx:
+    image: nginx:alpine
+    container_name: hospital-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - app
+    networks:
+      - hospital-network
+
+networks:
+  hospital-network:
+    driver: bridge
