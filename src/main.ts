@@ -5,10 +5,9 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // CORS 설정 추가
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+  // CORS 설정
   app.enableCors({
-    origin: frontendUrl,
+    origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -18,7 +17,7 @@ async function bootstrap() {
     .setTitle('My Hospital API')
     .setDescription('Hospital Management System API Documentation')
     .setVersion('1.0.0')
-    .addServer('http://localhost:3030', 'Local Development Server')
+    .addServer('https://168.107.56.235', 'Production Server')
     .addTag('doctors', '의사 관리 API')
     .addTag('posts', '게시글 관리 API')
     .addTag('consultations', '온라인 상담 API')
@@ -34,4 +33,4 @@ async function bootstrap() {
   console.log(`Swagger UI: ${await app.getUrl()}/docs`);
   console.log(`Swagger JSON: ${await app.getUrl()}/docs-json`);
 }
-bootstrap();
+void bootstrap();
